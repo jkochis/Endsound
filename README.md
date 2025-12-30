@@ -1,4 +1,4 @@
-# "Jam Room" is a Terrible Working Title #
+# Endsound #
 
 However, we hope that the project is not. Our goal is to create a browser based instrument / composition environment that
 anybody can join, create a room, and make music with anybody else on the internet.

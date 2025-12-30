@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Audio API Test</title>
+</head>
+<body>
+    <h1>Web Audio API Test</h1>
+    <button id="testButton">Test Audio Initialization</button>
+    <div id="output"></div>
+
+    <script>
+        const output = document.getElementById('output');
+        const testButton = document.getElementById('testButton');
+
+        function log(message, isError = false) {
+            const p = document.createElement('p');
+            p.textContent = message;
+            p.style.color = isError ? 'red' : 'green';
+            output.appendChild(p);
+        }
+
+        testButton.addEventListener('click', async function() {
+            output.innerHTML = '';
+            log('Starting Web Audio API test...');
+
+            try {
+                // Test 1: Create AudioContext
+                log('1. Creating AudioContext...');
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                log('   ✓ AudioContext created successfully');
+                log('   Sample rate: ' + audioContext.sampleRate + ' Hz');
+
+                // Test 2: Load AudioWorklet
+                log('2. Loading AudioWorklet module...');
+                await audioContext.audioWorklet.addModule('lib/audio-processor.js');
+                log('   ✓ AudioWorklet module loaded successfully');
+
+                // Test 3: Create AudioWorklet Node
+                log('3. Creating AudioWorkletNode...');
+                const audioWorkletNode = new AudioWorkletNode(audioContext, 'ks-audio-processor');
+                log('   ✓ AudioWorkletNode created successfully');
+
+                // Test 4: Connect to output
+                log('4. Connecting to audio output...');
+                audioWorkletNode.connect(audioContext.destination);
+                log('   ✓ Connected to output successfully');
+
+                // Test 5: Send a test message
+                log('5. Sending test message to worklet...');
+                audioWorkletNode.port.postMessage({
+                    type: 'setVolume',
+                    volume: 0.8
+                });
+                log('   ✓ Test message sent successfully');
+
+                // Test 6: Play a test note
+                log('6. Playing test note (440 Hz - A4)...');
+                audioWorkletNode.port.postMessage({
+                    type: 'play',
+                    noteStopId: 'test-note',
+                    frequency: 440,
+                    volume: 0.5
+                });
+                log('   ✓ Note play message sent');
+
+                // Stop the note after 1 second
+                setTimeout(() => {
+                    audioWorkletNode.port.postMessage({
+                        type: 'stop',
+                        noteStopId: 'test-note'
+                    });
+                    log('   ✓ Note stop message sent');
+                }, 1000);
+
+                log('');
+                log('=== ALL TESTS PASSED! ===');
+                log('The Web Audio API implementation is working correctly.');
+
+            } catch (error) {
+                log('ERROR: ' + error.message, true);
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

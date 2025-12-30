@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Collaborative music creation platform">
+    <meta name="author" content="">
+    <title>Jam Room - Collaborative Music</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/avatars.css">
+    <link rel="stylesheet" href="/css/buttons.css">
+    <link rel="stylesheet" href="/lib/vendor/shadowbox-3.0.3/shadowbox.css">
+	<script>
+	var d=new Date();
+	var weekday=new Array(7);
+	weekday[0]="Sunday";
+	weekday[1]="Monday";
+	weekday[2]="Tuesday";
+	weekday[3]="Wednesday";
+	weekday[4]="Thursday";
+	weekday[5]="Friday";
+	weekday[6]="Saturday";
+	</script>
+  </head>
+  <body lang="en">
+	  <section id="description">
+	    <h1>Welcome</h1>
+	    <h2>It's <script>document.write(weekday[d.getDay()]);</script> and you're making sweet music together.</h2>
+	    <p>Use the keyboard to make sounds.</p>
+	    <p>All of the letters, and all of the numbers make sounds. Even some of the symbols make sounds. The + and - keys change the octave, and the space bar is sustain.</p>
+	    
+	    <p id="browser-compatibility">This application works with all modern browsers that support the Web Audio API (Chrome, Firefox, Safari, Edge).</p>
+	  </section>
+	  
+	  <section class="modal" id="modal-connect">
+	    <button id="play">I want to play!</button>
+	    <button id="noplay">I just want to listen.</button>
+	  </section>
+	 
+	  <canvas id="viewport" width="150" height="100"></canvas>
+
+	  <!-- Javascript libraries -->
+	  <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	  <script>!window.jQuery && document.write(unescape('%3Cscript src="lib/vendor/jquery-1.4.4.js"%3E%3C/script%3E'))</script>
+    <script type="text/javascript" src="/lib/vendor/shadowbox-3.0.3/shadowbox.js"></script>
+    <script type="text/javascript" src="/lib/vendor/arbor.js"></script>
+
+    
+    <!-- Our scripts -->
+    <script src="lib/globals.js"></script>
+    <script src="lib/usermap.js"></script>
+    <script src="lib/interactions/interactions.js"></script>
+    <script src="lib/socket.js"></script>
+	  <script src="lib/vendor/dsp.js"></script>
+    <script src="lib/vendor/keyboard.js"></script>
+	  <script src="lib/audio.js"></script>
+	  
+	  <script>
+	    // Analytics
+      if(false) {
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-21107634-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      }
+    </script>
+  </body>
+</html>
