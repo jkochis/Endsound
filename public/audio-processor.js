@@ -17,6 +17,7 @@ class KSAudioProcessor extends AudioWorkletProcessor {
     this.damp = 0.9;
     this.damp2 = 1.0;
     this.noiseDamp = 0.5;
+    this.attack = 0.5; // Noise burst length as fraction of period (0–1)
     this.sustain = false;
     this.masterVolume = 0.8;
 
@@ -51,6 +52,15 @@ class KSAudioProcessor extends AudioWorkletProcessor {
         break;
       case 'setVolume':
         this.masterVolume = data.volume;
+        break;
+      case 'setParams':
+        if (data.params) {
+          if (data.params.damp !== undefined) this.damp = data.params.damp;
+          if (data.params.damp2 !== undefined) this.damp2 = data.params.damp2;
+          if (data.params.noiseDamp !== undefined) this.noiseDamp = data.params.noiseDamp;
+          if (data.params.attack !== undefined) this.attack = data.params.attack;
+          if (data.params.release !== undefined) this.releaseVolume = data.params.release;
+        }
         break;
     }
   }
@@ -159,7 +169,7 @@ class KSAudioProcessor extends AudioWorkletProcessor {
             let damp = this.damp;
 
             if (note.feedNoise) {
-              if (note.periodIndex > note.periodN / 2) {
+              if (note.periodIndex > note.periodN * (1 - this.attack)) {
                 // Feed noise between -1 and +1
                 note.period[periodIndex] = (1 / this.noiseDamp) * (Math.random() - Math.random());
                 damp *= this.noiseDamp;

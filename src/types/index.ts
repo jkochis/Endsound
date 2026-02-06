@@ -46,13 +46,34 @@ export interface KeyboardEvent {
   volume: number;
 }
 
+// Karplus-Strong synthesis parameters (user-adjustable)
+export interface KSParams {
+  damp: number;      // Main damping [0–1]
+  damp2: number;     // Secondary damping [0–1]
+  noiseDamp: number; // Noise mix damping [0–1]
+  attack: number;    // Noise burst length as fraction of period [0–1]
+  release: number;   // Release speed [0.00001–0.01]
+}
+
+// Hex keyboard note descriptor
+export interface HexNote {
+  id: string;   // keyId sent over socket, e.g. "hex_3_1"
+  hz: number;
+  col: number;
+  row: number;
+  cx: number;   // canvas centre x
+  cy: number;   // canvas centre y
+  radius: number;
+}
+
 // Audio Worklet message types
 export interface AudioWorkletMessage {
-  type: 'play' | 'stop' | 'sustain' | 'setVolume';
+  type: 'play' | 'stop' | 'sustain' | 'setVolume' | 'setParams';
   noteStopId?: string;
   frequency?: number;
   volume?: number;
   value?: any;
+  params?: KSParams;
 }
 
 // Karplus-Strong note state
